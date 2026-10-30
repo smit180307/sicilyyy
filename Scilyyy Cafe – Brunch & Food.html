@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Scilyyy Cafe – Brunch & Food</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=DM+Sans:wght@400;500;700&display=swap">
+<style>
+:root{--bg:#f4fff8;--ink:#2b1b3d;--soft:#5d4d70;--card:#fff;--yolk:#ffc933;--pink:#ff8fb1;--mint:#b9ecc9;--plum:#2b1b3d;--line:#e3d9ee;
+--display:'Bagel Fat One','Trebuchet MS',system-ui,sans-serif;--body:'DM Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1a1126;--ink:#fdf6ff;--soft:#c9b9dc;--card:#2a1c3b;--line:#443158;--plum:#120a1c}}
+:root[data-theme="dark"]{--bg:#1a1126;--ink:#fdf6ff;--soft:#c9b9dc;--card:#2a1c3b;--line:#443158;--plum:#120a1c}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.6;overflow-x:hidden}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--pink);outline-offset:3px}
+.wrap{width:min(1080px,100% - 2.5rem);margin-inline:auto}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.1;margin:0}
+h2{font-size:clamp(2rem,6vw,3.2rem)}
+
+/* splash — the one orchestrated moment */
+#splash{position:fixed;inset:0;z-index:100;background:var(--plum);display:grid;place-items:center;transition:transform .9s cubic-bezier(.77,0,.18,1)}
+#splash.out{transform:translateY(-100%)}
+.logo{text-align:center;color:#fff}
+.logo svg{width:min(52vw,220px);height:auto;overflow:visible}
+.egg{transform-origin:110px 110px;animation:pop .7s cubic-bezier(.3,1.6,.5,1) both}
+.yolk{transform-origin:110px 105px;animation:pop .6s .5s cubic-bezier(.3,1.8,.5,1) both}
+.shine{animation:fade .4s 1s both}
+.ring{stroke-dasharray:640;stroke-dashoffset:640;animation:draw 1.3s .2s ease-out forwards}
+.steam path{stroke-dasharray:40;stroke-dashoffset:40;animation:draw 1s 1.1s ease-out forwards}
+.logo .name{font-family:var(--display);font-size:clamp(2.2rem,9vw,3.6rem);margin-top:.6rem;display:flex;justify-content:center;gap:.02em}
+.logo .name span{display:inline-block;opacity:0;transform:translateY(30px) rotate(-8deg);animation:letter .5s calc(1s + var(--i)*.07s) cubic-bezier(.3,1.6,.5,1) forwards}
+.logo .tag{opacity:0;color:var(--mint);letter-spacing:.08em;animation:fade .6s 2.1s forwards}
+@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+@keyframes fade{to{opacity:1}from{opacity:0}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes letter{to{opacity:1;transform:none}}
+
+/* header */
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;justify-content:space-between;height:64px}
+.brand{font-family:var(--display);font-size:1.5rem;text-decoration:none}
+nav ul{display:flex;gap:1.6rem;list-style:none;margin:0;padding:0}
+nav a{text-decoration:none;font-weight:500}
+nav a:hover{color:var(--pink)}
+#burger{display:none;background:none;border:2px solid var(--ink);border-radius:10px;width:44px;height:44px;font-size:1.3rem;color:var(--ink);cursor:pointer}
+@media(max-width:720px){
+ #burger{display:block}
+ nav{position:absolute;left:0;right:0;top:64px;background:var(--bg);border-bottom:1px solid var(--line);max-height:0;overflow:hidden;transition:max-height .35s}
+ nav.open{max-height:320px}
+ nav ul{flex-direction:column;gap:0;padding:.5rem 1.25rem 1rem}
+ nav li a{display:block;padding:.7rem 0}
+}
+
+/* hero */
+.hero{padding:clamp(2.5rem,8vw,6rem) 0;display:grid;gap:2.5rem;grid-template-columns:1.1fr .9fr;align-items:center}
+.hero h1{font-size:clamp(2.8rem,10vw,5.6rem)}
+.hero p{font-size:1.15rem;color:var(--soft);max-width:34ch}
+.btns{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:1.6rem}
+.btn{display:inline-block;padding:.9rem 1.6rem;border-radius:999px;font-weight:700;text-decoration:none;border:2px solid var(--ink);cursor:pointer;font:inherit;font-weight:700;transition:transform .2s}
+.btn.main{background:var(--yolk);color:#2b1b3d}
+.btn:hover{transform:translateY(-3px)}
+.plate{aspect-ratio:1;border-radius:50%;background:var(--mint);display:grid;place-items:center;position:relative;font-size:clamp(5rem,22vw,9rem);box-shadow:0 0 0 14px var(--yolk) inset}
+.plate .f{position:absolute;font-size:.32em}
+.f1{top:6%;left:10%}.f2{bottom:8%;right:6%}.f3{top:12%;right:8%}
+@media(max-width:720px){.hero{grid-template-columns:1fr}.plate{max-width:320px;justify-self:center}}
+
+/* menu */
+section{padding:clamp(3rem,8vw,5.5rem) 0}
+#menu{background:var(--plum);color:#fdf6ff}
+#menu h2{color:var(--yolk)}
+.tabs{display:flex;gap:.6rem;flex-wrap:wrap;margin:1.5rem 0 2rem}
+.tab{padding:.6rem 1.2rem;border-radius:999px;border:2px solid var(--mint);background:none;color:var(--mint);font:inherit;font-weight:700;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--mint);color:#2b1b3d}
+.grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.item{background:#ffffff14;border:1px solid #ffffff2b;border-radius:22px;padding:1.3rem;display:flex;gap:1rem;align-items:flex-start;animation:fade .4s both}
+.item .e{font-size:2.4rem;line-height:1}
+.item h3{font-size:1.25rem}
+.item p{margin:.3rem 0 0;color:#cdbfe0;font-size:.95rem}
+.price{margin-left:auto;font-weight:700;color:var(--yolk);white-space:nowrap}
+
+/* about + visit */
+.two{display:grid;gap:2rem;grid-template-columns:1fr 1fr}
+@media(max-width:720px){.two{grid-template-columns:1fr}}
+.about p{color:var(--soft);font-size:1.1rem;max-width:52ch}
+.hours{list-style:none;padding:0;margin:1rem 0 0}
+.hours li{display:flex;justify-content:space-between;padding:.6rem 0;border-bottom:1px dashed var(--line)}
+.box{background:var(--card);border:2px solid var(--ink);border-radius:26px;padding:1.5rem}
+.box label{display:block;font-weight:500;margin-top:.9rem}
+.box input,.box select{width:100%;padding:.8rem;border-radius:12px;border:2px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;margin-top:.3rem}
+.box .btn{width:100%;margin-top:1.2rem}
+#msg{margin:.8rem 0 0;font-weight:700;min-height:1.5em}
+footer{background:var(--plum);color:#cdbfe0;text-align:center;padding:2rem 1rem}
+footer b{font-family:var(--display);font-weight:400;font-size:1.6rem;color:var(--yolk)}
+.btn.small{padding:.45rem 1.1rem;background:var(--yolk);color:#2b1b3d}
+.buy{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:.5rem}.buy .price{margin:0}
+.add{border:0;border-radius:999px;background:var(--yolk);color:#2b1b3d;font:inherit;font-weight:700;padding:.35rem .9rem;cursor:pointer}
+#cartbar{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translate(-50%,200%);z-index:60;background:var(--yolk);color:#2b1b3d;border-radius:999px;padding:.8rem 1.4rem;font-weight:700;text-decoration:none;box-shadow:0 8px 24px #0004;transition:transform .3s;white-space:nowrap}
+#cartbar.show{transform:translate(-50%,0)}
+#authm{position:fixed;inset:0;z-index:120;background:#000a;display:none;place-items:center;padding:1rem;overflow:auto}
+#authm.open{display:grid}
+#authm .box{width:min(400px,100%)}
+#authm h3{font-size:1.7rem}
+.alt{background:none;border:0;color:var(--ink);text-decoration:underline;cursor:pointer;font:inherit;margin-top:.8rem}
+.soc{width:100%;margin-top:.6rem;background:var(--card);color:var(--ink)}
+#aerr{color:#d6336c;font-weight:700;margin:.6rem 0 0;min-height:1.4em}
+#sum{margin-top:1rem}
+#sum .ln{display:flex;align-items:center;gap:.5rem;padding:.4rem 0;border-bottom:1px dashed var(--line)}
+#sum .ln b{margin-left:auto}
+#sum .q{border:2px solid var(--ink);background:none;color:var(--ink);border-radius:50%;width:28px;height:28px;cursor:pointer;font-weight:700}
+.empty{color:var(--soft);margin:0}
+.ticket{display:block;background:var(--yolk);color:#2b1b3d;border-radius:18px;padding:1rem 1.2rem;margin-top:.5rem;font-weight:500}
+.ticket .tk{display:block;font-family:var(--display);font-size:3rem;line-height:1.1}
+.mine{display:block;margin-top:.6rem;font-size:.95rem;color:var(--soft);font-weight:400}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01s!important;animation-delay:0s!important;transition-duration:.01s!important}}
+[hidden]{display:none!important}
+#kit{position:fixed;inset:0;z-index:125;background:var(--bg);color:var(--ink);overflow:auto;display:none;padding:calc(1rem + env(safe-area-inset-top,0px)) 1rem calc(2rem + env(safe-area-inset-bottom,0px))}
+#kit.open{display:block}
+.kwrap{width:min(900px,100%);margin:auto}
+.khead{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}.khead h3{font-size:2rem;margin-right:auto}
+.ktabs{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0}
+.ktabs button{padding:.45rem 1rem;border-radius:999px;border:2px solid var(--ink);background:none;color:var(--ink);font:inherit;font-weight:700;cursor:pointer}
+.ktabs button[aria-pressed="true"]{background:var(--yolk);color:#2b1b3d}
+.ord{background:var(--card);border:2px solid var(--ink);border-radius:20px;padding:1rem 1.2rem;margin-bottom:.8rem;display:grid;gap:.4rem}
+.ord .top{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}.ord .no{font-family:var(--display);font-size:1.6rem}
+.pill{border-radius:999px;padding:.15rem .8rem;font-weight:700;font-size:.85rem;background:var(--line)}
+.pill.Ready{background:var(--mint);color:#2b1b3d}.pill.New{background:var(--yolk);color:#2b1b3d}.pill.Preparing{background:var(--pink);color:#2b1b3d}
+.acts{display:flex;gap:.5rem;flex-wrap:wrap}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+
+<div id="splash" aria-label="Scilyyy Cafe">
+ <div class="logo">
+  <svg viewBox="0 0 220 220" aria-hidden="true">
+   <circle class="ring" cx="110" cy="110" r="100" fill="none" stroke="#ffc933" stroke-width="5" stroke-linecap="round"/>
+   <path class="egg" d="M110 48c26-8 58 6 62 36 4 26-14 34-8 52 6 20-22 32-48 30-30-2-52-18-50-44 2-20 16-24 14-42-2-20 8-26 30-32z" fill="#fff"/>
+   <circle class="yolk" cx="112" cy="106" r="30" fill="#ffc933"/>
+   <ellipse class="shine" cx="102" cy="96" rx="8" ry="5" fill="#fff" opacity=".8"/>
+   <g class="steam" fill="none" stroke="#b9ecc9" stroke-width="4" stroke-linecap="round">
+    <path d="M86 30c-8-8 8-14 0-22"/><path d="M110 26c-8-8 8-14 0-22"/><path d="M134 30c-8-8 8-14 0-22"/>
+   </g>
+  </svg>
+  <div class="name" id="logoName"></div>
+  <div class="tag">brunch · coffee · good food</div>
+ </div>
+</div>
+
+<header>
+ <div class="wrap bar">
+  <a class="brand" href="#top" id="replay" title="Replay intro">scilyyy cafe</a>
+  <button id="burger" aria-label="Open menu" aria-expanded="false">☰</button>
+  <nav id="nav"><ul>
+   <li><a href="#menu">Menu</a></li><li><a href="#about">About</a></li><li><a href="#visit">Book</a></li><li><button class="btn small" id="authBtn">Sign in</button></li><li><button class="btn small" id="kitBtn" hidden>Orders</button></li>
+  </ul></nav>
+ </div>
+</header>
+
+<main id="top">
+ <div class="wrap hero">
+  <div>
+   <h1>Brunch that makes the morning better.</h1>
+   <p>Fluffy pancakes, golden eggs and fresh coffee, served all day at Scilyyy Cafe.</p>
+   <div class="btns"><a class="btn main" href="#menu">See the menu</a><a class="btn" href="#visit">Book a table</a></div>
+  </div>
+  <div class="plate" aria-hidden="true">🍳<span class="f f1">🥞</span><span class="f f2">☕</span><span class="f f3">🥑</span></div>
+ </div>
+
+ <section id="menu"><div class="wrap">
+  <h2>Our menu</h2>
+  <div class="tabs" role="tablist" id="tabs"></div>
+  <div class="grid" id="grid" role="tabpanel"></div>
+ </div></section>
+
+ <section id="about"><div class="wrap two">
+  <div class="about">
+   <h2>Slow mornings, fresh plates</h2>
+   <p>We cook brunch the way you would at home on a lazy weekend: simple ingredients, made to order, and served warm. Come for breakfast, stay for lunch.</p>
+  </div>
+  <ul class="hours">
+   <li><span>Monday – Friday</span><b>8:00 am – 9:00 pm</b></li>
+   <li><span>Saturday</span><b>8:00 am – 10:00 pm</b></li>
+   <li><span>Sunday brunch</span><b>9:00 am – 4:00 pm</b></li>
+  </ul>
+ </div></section>
+
+ <section id="visit"><div class="wrap two">
+  <div><h2>Save your table</h2><p class="about" style="color:var(--soft)">Sign in, add your food from the menu, then pick a date and time. You get a token number and your table time right away.</p></div>
+  <div class="box">
+   <label for="nm">Your name</label><input id="nm" autocomplete="name">
+   <label for="dt">Date</label><input id="dt" type="date">
+   <label for="gs">Guests</label>
+   <select id="gs"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6+</option></select>
+   <label for="tm">Table time</label><select id="tm"></select>
+   <div id="sum"></div>
+   <button class="btn main" id="book">Book table and get token</button>
+   <p id="msg" role="status"></p><div id="mine"></div>
+  </div>
+ </div></section>
+</main>
+
+<a id="cartbar" href="#visit">🛒 <span id="cc"></span></a>
+<div id="authm" role="dialog" aria-modal="true" aria-labelledby="at"><div class="box">
+ <h3 id="at">Sign in</h3>
+ <div id="an"><label for="ani">Your name</label><input id="ani" autocomplete="name"></div>
+ <label for="ae">Email</label><input id="ae" type="email" autocomplete="email">
+ <div id="apw"><label for="api">Password</label><input id="api" type="password" autocomplete="current-password"></div>
+ <p id="aerr" role="alert"></p>
+ <button class="btn main" id="go" style="width:100%">Sign in</button>
+ <button class="btn soc" data-m="google">🇬 Continue with Google</button>
+ <button class="btn soc" data-m="facebook">🇫 Continue with Facebook</button>
+ <button class="alt" id="swap">New here? Create an account</button>
+ <button class="alt" id="cls">Close</button>
+</div></div>
+<div id="kit" role="dialog" aria-modal="true" aria-label="Orders"><div class="kwrap">
+ <div class="khead"><h3>Orders</h3><button class="btn small" id="kxl">Export Excel</button><button class="btn small" id="kx">Close</button></div>
+ <div class="ktabs" id="ktabs"></div><div id="klist"></div><p id="kmsg" role="status"></p>
+</div></div>
+<footer><b>scilyyy cafe</b><p>Made with love, eggs and coffee · © <span id="yr"></span></p></footer>
+
+<script>
+(function(){
+ // splash letters
+ var name='scilyyy cafe', box=document.getElementById('logoName'), splash=document.getElementById('splash');
+ function build(){box.innerHTML='';name.split('').forEach(function(c,i){var s=document.createElement('span');s.style.setProperty('--i',i);s.textContent=c===' '?'\u00a0':c;box.appendChild(s)})}
+ build();
+ var timer;
+ function hide(){splash.classList.add('out');document.body.style.overflow=''}
+ function show(){clearTimeout(timer);var c=splash.cloneNode(true);splash.replaceWith(c);splash=c;splash.classList.remove('out');document.body.style.overflow='hidden';timer=setTimeout(hide,3200)}
+ document.body.style.overflow='hidden';timer=setTimeout(hide,3200);
+ splash.addEventListener('click',hide);
+ document.getElementById('replay').addEventListener('click',function(e){if(location.hash===''||location.hash==='#top'){e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});show()}});
+
+ // mobile nav
+ var nav=document.getElementById('nav'),bg=document.getElementById('burger');
+ bg.addEventListener('click',function(){var o=nav.classList.toggle('open');bg.setAttribute('aria-expanded',o);bg.textContent=o?'✕':'☰'});
+ nav.addEventListener('click',function(e){if(e.target.tagName==='A'){nav.classList.remove('open');bg.textContent='☰';bg.setAttribute('aria-expanded','false')}});
+
+ // menu
+ var MENU={
+  'Brunch':[['🥞','Blueberry Pancakes','Fluffy stack, maple syrup, butter',249],['🥑','Avocado Toast','Sourdough, smashed avocado, chilli flakes',229],['🍳','Sunny Side Plate','Two eggs, toast, grilled tomato',199],['🧇','Honey Waffles','Crisp waffle, honey, fresh fruit',239]],
+  'Savoury':[['🥪','Club Sandwich','Grilled veggies, cheese, fries',219],['🍝','Creamy Pasta','White sauce, herbs, garlic bread',269],['🌯','Paneer Wrap','Spiced paneer, onions, mint dip',189],['🍕','Cafe Pizza','Thin crust, mozzarella, basil',299]],
+  'Sweet':[['🍰','Strawberry Cake','Soft sponge, fresh cream',159],['🍩','Glazed Donuts','Two pieces, warm and fresh',129],['🍫','Choco Brownie','Gooey centre, vanilla ice cream',179],['🍮','Caramel Pudding','Silky and cool',139]],
+  'Drinks':[['☕','Cappuccino','Double shot, steamed milk',129],['🧋','Iced Latte','Cold milk, espresso, ice',149],['🍓','Berry Smoothie','Strawberry, banana, yogurt',159],['🍋','Fresh Lemonade','Mint, lemon, a pinch of salt',99]]
+ };
+ var tabs=document.getElementById('tabs'),grid=document.getElementById('grid');
+ function render(k){
+  grid.innerHTML=MENU[k].map(function(i){return '<article class="item"><span class="e" aria-hidden="true">'+i[0]+'</span><div><h3>'+i[1]+'</h3><p>'+i[2]+'</p></div><div class="buy"><span class="price">₹'+i[3]+'</span><button class="add" data-n="'+i[1]+'" data-p="'+i[3]+'">Add</button></div></article>'}).join('');
+  [].forEach.call(tabs.children,function(b){b.setAttribute('aria-selected',b.textContent===k)});
+ }
+ Object.keys(MENU).forEach(function(k,n){var b=document.createElement('button');b.className='tab';b.setAttribute('role','tab');b.textContent=k;b.onclick=function(){render(k)};tabs.appendChild(b)});
+ render('Brunch');
+
+ // booking
+ var d=document.getElementById('dt');d.min=new Date().toISOString().split('T')[0];
+ // storage (demo: kept in this browser only)
+ var $=function(i){return document.getElementById(i)};
+ function ld(k,f){try{return JSON.parse(localStorage.getItem(k))||f}catch(e){return f}}
+ function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+ function hs(s){var h=5381;for(var i=0;i<s.length;i++)h=(h*33^s.charCodeAt(i))>>>0;return String(h)}
+ function esc(s){var p=document.createElement('p');p.textContent=s;return p.innerHTML}
+ var user=ld('sc_user',null),cart={},mode='in';
+ var tm=$('tm');for(var h=9;h<=21;h++)[0,30].forEach(function(m){if(h===21&&m)return;var s=(h>12?h-12:h)+':'+(m?'30':'00')+(h>=12?' PM':' AM');tm.add(new Option(s,s))});
+
+ // sign in / sign up / Google / Facebook
+ var am=$('authm'),T={in:'Sign in',up:'Create account',google:'Continue with Google',facebook:'Continue with Facebook'};
+ function setMode(m){mode=m;$('at').textContent=T[m];$('go').textContent=T[m];$('an').style.display=m==='in'?'none':'block';$('apw').style.display=(m==='in'||m==='up')?'block':'none';$('swap').style.display=(m==='in'||m==='up')?'inline':'none';$('swap').textContent=m==='in'?'New here? Create an account':'Have an account? Sign in';$('aerr').textContent=''}
+ function openAuth(m){setMode(m||'in');am.classList.add('open');setTimeout(function(){$(m==='in'||!m?'ae':'ani').focus()},50)}
+ function closeAuth(){am.classList.remove('open')}
+ $('cls').onclick=closeAuth;
+ am.addEventListener('click',function(e){if(e.target===am)closeAuth()});
+ document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAuth()});
+ $('swap').onclick=function(){setMode(mode==='in'?'up':'in')};
+ [].forEach.call(document.querySelectorAll('.soc'),function(b){b.onclick=function(){setMode(b.dataset.m)}});
+ $('go').onclick=function(){
+  var n=$('ani').value.trim(),e=$('ae').value.trim().toLowerCase(),p=$('api').value,er=$('aerr'),us=ld('sc_users',[]);
+  if(!/^\S+@\S+\.\S+$/.test(e)){er.textContent='Enter a valid email.';return}
+  if(mode==='in'){var u=us.filter(function(x){return x.e===e&&x.p===hs(p)})[0];if(!u){er.textContent='Email or password is wrong. New here? Create an account.';return}user={n:u.n,e:e}}
+  else if(mode==='up'){if(!n||p.length<6){er.textContent='Add your name and a password of 6 or more characters.';return}if(us.some(function(x){return x.e===e})){er.textContent='This email already has an account. Sign in instead.';return}us.push({n:n,e:e,p:hs(p)});sv('sc_users',us);user={n:n,e:e}}
+  else{if(!n){er.textContent='Add your name.';return}user={n:n,e:e,via:mode}}
+  sv('sc_user',user);closeAuth();paint();
+ };
+ $('authBtn').onclick=function(){if(user){user=null;sv('sc_user',null);$('nm').value='';paint()}else openAuth('in')};
+
+ // order
+ function money(){var t=0,q=0;Object.keys(cart).forEach(function(k){t+=cart[k].p*cart[k].q;q+=cart[k].q});return{t:t,q:q}}
+ function renderCart(){
+  var k=Object.keys(cart),m=money();
+  $('sum').innerHTML=k.length?k.map(function(n){return '<div class="ln"><span>'+n+'</span><button class="q" data-a="-" data-n="'+n+'" aria-label="Remove one">−</button><span>'+cart[n].q+'</span><button class="q" data-a="+" data-n="'+n+'" aria-label="Add one">+</button><b>₹'+cart[n].p*cart[n].q+'</b></div>'}).join('')+'<div class="ln"><span>Total</span><b>₹'+m.t+'</b></div>':'<p class="empty">No items yet. Tap Add on any menu item.</p>';
+  $('cc').textContent=m.q+' item'+(m.q===1?'':'s')+', ₹'+m.t+' · View order';
+  $('cartbar').classList.toggle('show',m.q>0);
+ }
+ grid.addEventListener('click',function(e){var b=e.target.closest('.add');if(!b)return;var n=b.dataset.n;cart[n]=cart[n]||{p:+b.dataset.p,q:0};cart[n].q++;renderCart();b.textContent='Added ✓';setTimeout(function(){b.textContent='Add'},900)});
+ $('sum').addEventListener('click',function(e){var b=e.target.closest('.q');if(!b)return;var n=b.dataset.n;cart[n].q+=b.dataset.a==='+'?1:-1;if(cart[n].q<1)delete cart[n];renderCart()});
+ function ticket(t){return '<span class="ticket">Your token number<span class="tk">#'+('00'+t.no).slice(-3)+'</span>Table '+t.table+', '+esc(t.time)+' on '+esc(t.date)+'<br>'+t.guests+' guest(s), total ₹'+t.total+'</span>'}
+ function paint(){
+  $('authBtn').textContent=user?'Sign out ('+user.n.split(' ')[0]+')':'Sign in';
+  if(user&&!$('nm').value)$('nm').value=user.n;
+  var my=user?ld('sc_tokens',[]).filter(function(t){return t.by===user.e}).slice(0,3):[];
+  $('mine').innerHTML=my.length?'<span class="mine"><b>Your bookings</b></span>'+my.map(function(t){return '<span class="mine">Token #'+('00'+t.no).slice(-3)+', Table '+t.table+', '+esc(t.time)+', '+esc(t.date)+'</span>'}).join(''):'';
+ }
+ $('book').onclick=function(){
+  var m=$('msg'),n=$('nm').value.trim(),k=Object.keys(cart);m.style.color='#d6336c';
+  if(!user){m.textContent='Please sign in to book.';openAuth('in');return}
+  if(!k.length){m.textContent='Pick at least one item from the menu first.';return}
+  if(!n||!d.value){m.textContent='Add your name and a date.';return}
+  var c=ld('sc_count',0)+1;sv('sc_count',c);
+  var t={no:c,table:(c%12)+1,date:d.value,time:tm.value,guests:$('gs').value,total:money().t,by:user.e,items:k.map(function(x){return x+' x'+cart[x].q}),lines:k.map(function(x){return{n:x,q:cart[x].q,p:cart[x].p}})};
+  var all=ld('sc_tokens',[]);all.unshift(t);sv('sc_tokens',all);if(window.scSave)window.scSave(t,user);
+  cart={};renderCart();m.style.color='';m.innerHTML=ticket(t);paint();
+ };
+ renderCart();paint();
+ document.getElementById('yr').textContent=new Date().getFullYear();
+})();
+</script>
+<script>
+(function(){
+ var $=function(i){return document.getElementById(i)};
+ var db=null,isOwner=false,orders=[],filter='All',unsub=null,ST=['New','Preparing','Ready','Served'];
+ function esc(s){var p=document.createElement('p');p.textContent=s==null?'':s;return p.innerHTML}
+ function pad(n){return ('00'+n).slice(-3)}
+ function msg(t){$('kmsg').textContent=t}
+ // save every new booking and order to the shared database
+ window.scSave=async function(t,u){
+  if(!db)return;
+  try{await db.collection('orders').add({no:t.no,name:u.n,email:u.e,table:t.table,date:t.date,time:t.time,guests:t.guests,items:t.items,lines:t.lines,total:t.total,status:'New',created:Date.now()})}catch(e){}
+ };
+ async function init(){
+  if(!window.claude||!claude.use)return;
+  try{var u=await claude.use('user');isOwner=!!(u&&u.canEdit());}catch(e){}
+  try{db=await claude.use('db')}catch(e){}
+  if(isOwner)$('kitBtn').hidden=false;
+ }
+ init();
+ function card(o){var nx=ST[ST.indexOf(o.status)+1];
+  return '<article class="ord"><div class="top"><span class="no">#'+pad(o.no)+'</span><b>'+esc(o.name)+'</b><span class="pill '+esc(o.status)+'">'+esc(o.status)+'</span></div><div>Table '+esc(o.table)+' · '+esc(o.time)+' · '+esc(o.date)+' · '+esc(o.guests)+' guest(s)</div><div>'+(o.items||[]).map(esc).join(', ')+'</div><div><b>₹'+esc(o.total)+'</b></div><div class="acts">'+(nx?'<button class="btn small" data-a="next" data-id="'+o._id+'" data-s="'+nx+'">Mark '+nx+'</button>':'')+'<button class="btn small" data-a="inv" data-id="'+o._id+'">Invoice</button></div></article>'}
+ function render(){
+  var c={};orders.forEach(function(o){c[o.status]=(c[o.status]||0)+1});
+  $('ktabs').innerHTML=['All'].concat(ST).map(function(s){return '<button data-f="'+s+'" aria-pressed="'+(filter===s)+'">'+s+(s==='Ready'?' for pickup':'')+' ('+(s==='All'?orders.length:c[s]||0)+')</button>'}).join('');
+  var l=orders.filter(function(o){return filter==='All'||o.status===filter});
+  $('klist').innerHTML=l.length?l.map(card).join(''):'<p>No orders here yet.</p>';
+ }
+ function openKit(){
+  $('kit').classList.add('open');msg('');
+  if(!db){$('klist').innerHTML='<p>The orders database is not available in this view. Open the page signed in to Claude.</p>';return}
+  if(unsub)return;
+  unsub=db.collection('orders').onSnapshot(function(s){orders=s.docs.map(function(d){var x=d.data();x._id=d.id;return x}).sort(function(a,b){return (b.created||0)-(a.created||0)});render()},function(){msg('Could not load orders.')});
+ }
+ $('kitBtn').onclick=openKit;
+ $('kx').onclick=function(){$('kit').classList.remove('open')};
+ document.addEventListener('keydown',function(e){if(e.key==='Escape')$('kit').classList.remove('open')});
+ async function save(name,data){
+  try{var d=await claude.use('downloads');if(!d){msg('Downloads are not available in this view.');return}await d.save({filename:name,data:data});msg('')}
+  catch(e){msg(e&&e.code==='declined'?'':'Could not save the file.')}
+ }
+ function invoice(o){
+  var L=o.lines||[],rows=L.map(function(x){return '<tr><td>'+esc(x.n)+'</td><td>'+esc(x.q)+'</td><td>₹'+esc(x.p)+'</td><td>₹'+x.q*x.p+'</td></tr>'}).join('');
+  if(!L.length)rows='<tr><td colspan="4">'+(o.items||[]).map(esc).join(', ')+'</td></tr>';
+  return '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Invoice INV-'+pad(o.no)+'</title><style>body{font-family:Arial,sans-serif;max-width:640px;margin:2rem auto;padding:0 1rem;color:#2b1b3d}h1{margin:0}table{width:100%;border-collapse:collapse;margin-top:1rem}th,td{text-align:left;padding:.5rem;border-bottom:1px solid #ddd}.t{text-align:right;font-size:1.2rem;font-weight:bold;margin-top:1rem}button{margin-top:1.5rem;padding:.6rem 1.2rem}@media print{button{display:none}}</style></head><body><h1>Scilyyy Cafe</h1><p>Invoice INV-'+pad(o.no)+' · '+esc(o.date)+'</p><p>Customer: <b>'+esc(o.name)+'</b><br>Token #'+pad(o.no)+' · Table '+esc(o.table)+' · '+esc(o.time)+' · '+esc(o.guests)+' guest(s)</p><table><tr><th>Item</th><th>Qty</th><th>Rate</th><th>Amount</th></tr>'+rows+'</table><p class="t">Total ₹'+esc(o.total)+'</p><p>Thank you for dining with us.</p><button onclick="window.print()">Print or save as PDF</button></body></html>';
+ }
+ $('kit').addEventListener('click',function(e){
+  var b=e.target.closest('button');if(!b)return;
+  if(b.dataset.f){filter=b.dataset.f;render();return}
+  var o=orders.filter(function(x){return x._id===b.dataset.id})[0];
+  if(b.dataset.a==='next'&&db){db.doc('orders/'+b.dataset.id).update({status:b.dataset.s}).catch(function(){msg('Could not update the order.')})}
+  if(b.dataset.a==='inv'&&o)save('invoice-INV-'+pad(o.no)+'.html',invoice(o));
+ });
+ $('kxl').onclick=function(){
+  if(!orders.length){msg('No orders to export yet.');return}
+  if(!window.XLSX){msg('The Excel tool did not load. Check your connection and try again.');return}
+  var rows=orders.map(function(o){return{Token:'#'+pad(o.no),Customer:o.name,Email:o.email,Date:o.date,'Table time':o.time,Table:o.table,Guests:o.guests,Items:(o.items||[]).join(', '),'Total (INR)':o.total,Status:o.status}});
+  var wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(rows),'Orders');
+  save('scilyyy-orders-'+new Date().toISOString().slice(0,10)+'.xlsx',new Uint8Array(XLSX.write(wb,{type:'array',bookType:'xlsx'})));
+ };
+})();
+</script>
+</body>
+</html>
